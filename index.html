@@ -85,6 +85,10 @@
                     <div class="legend-item"><span class="dot" style="background:var(--tag-purple)"></span> Qwen3-VL
                     </div>
                     <div class="legend-item"><span class="dot" style="background:var(--tag-red)"></span> Ovis2.5</div>
+                    <div class="legend-item"><span class="dot" style="background:var(--tag-orange)"></span> MiniCPM-V
+                    </div>
+                    <div class="legend-item"><span class="dot" style="background:var(--tag-pink)"></span> PaliGemma 2
+                    </div>
                 </div>
                 <canvas id="radarChart" width="500" height="400"></canvas>
             </div>
@@ -133,6 +137,20 @@
                             <td>Curriculum + Thinking Mode</td>
                             <td>Fine-grained OCR/Charts</td>
                         </tr>
+                        <tr>
+                            <td class="model-name">MiniCPM-V 2.6</td>
+                            <td>SigLip + Qwen2</td>
+                            <td>32K (High Eff.)</td>
+                            <td>Visual Token Compression</td>
+                            <td>Real-time Mobile Video</td>
+                        </tr>
+                        <tr>
+                            <td class="model-name">PaliGemma 2</td>
+                            <td>SigLIP + Gemma 2</td>
+                            <td>8K (Res Scaling)</td>
+                            <td>Multi-stage Fine-tuning</td>
+                            <td>Broad Academic/Domain Tasks</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -162,6 +180,78 @@
                 </div>
                 <p style="font-size: 0.8rem; color: #b2bec3; margin-top: 10px;">* Scores based on reported MathVista
                     benchmarks in papers.</p>
+            </div>
+        </section>
+
+        <!-- New: Efficiency vs Performance -->
+        <section class="efficiency-analysis" id="efficiency">
+            <h2 class="section-title">Efficiency vs Performance</h2>
+            <div class="glass-panel" style="padding: 20px;">
+                <p style="text-align: center; margin-bottom: 20px;">Model Size (Parameters) vs Benchmark Score
+                    (MathVista)</p>
+                <canvas id="scatterChart" width="800" height="400"></canvas>
+            </div>
+        </section>
+
+        <!-- New: Modality Matrix -->
+        <section class="modality-matrix" id="modality">
+            <h2 class="section-title" style="margin-top: 40px;">Modality Support</h2>
+            <div class="table-container glass-panel">
+                <table class="modality-table">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Image</th>
+                            <th>Multi-Image</th>
+                            <th>Video</th>
+                            <th>Audio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>InternVL 3.5</td>
+                            <td class="supported">✓</td>
+                            <td class="supported">✓</td>
+                            <td class="supported">✓</td>
+                            <td class="unsupported">-</td>
+                        </tr>
+                        <tr>
+                            <td>SmolVLM</td>
+                            <td class="supported">✓</td>
+                            <td class="supported">✓</td>
+                            <td class="unsupported">-</td>
+                            <td class="unsupported">-</td>
+                        </tr>
+                        <tr>
+                            <td>Qwen3-VL</td>
+                            <td class="supported">✓</td>
+                            <td class="supported">✓</td>
+                            <td class="supported">✓ (Long)</td>
+                            <td class="unsupported">-</td>
+                        </tr>
+                        <tr>
+                            <td>Ovis2.5</td>
+                            <td class="supported">✓ (Native)</td>
+                            <td class="supported">✓</td>
+                            <td class="supported">✓</td>
+                            <td class="unsupported">-</td>
+                        </tr>
+                        <tr>
+                            <td>MiniCPM-V 2.6</td>
+                            <td class="supported">✓</td>
+                            <td class="supported">✓</td>
+                            <td class="supported">✓ (Real-time)</td>
+                            <td class="unsupported">-</td>
+                        </tr>
+                        <tr>
+                            <td>PaliGemma 2</td>
+                            <td class="supported">✓</td>
+                            <td class="supported">✓</td>
+                            <td class="supported">✓</td>
+                            <td class="unsupported">-</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </section>
 
@@ -383,6 +473,51 @@
                             </ul>
                         </div>
                         <a href="ovis25.html" class="btn-read-more">Read Full Analysis →</a>
+                    </div>
+                </article>
+
+                <!-- New: MiniCPM-V 2.6 -->
+                <article class="card glass-panel fade-in">
+                    <div class="card-header">
+                        <h3>MiniCPM-V 2.6</h3>
+                        <a href="https://arxiv.org/abs/2408.01800" target="_blank" class="link-icon">ArXiv ↗</a>
+                    </div>
+                    <div class="card-body">
+                        <p class="summary">
+                            <strong>"Real-time Mobile Video"</strong><br>
+                            단 8B 파라미터로 GPT-4V급 성능. 엣지 디바이스 비디오 이해의 강자.
+                        </p>
+                        <div class="tech-specs">
+                            <h4>Core Technologies</h4>
+                            <ul class="features">
+                                <li><strong>Token Compression:</strong> 1.8M 픽셀 이미지를 단 640 토큰으로 처리.</li>
+                                <li><strong>Any Aspect Ratio:</strong> 유연한 해상도 대응.</li>
+                            </ul>
+                        </div>
+                        <a href="minicpm-v.html" class="btn-read-more">Read Full Analysis →</a>
+                    </div>
+                </article>
+
+                <!-- New: PaliGemma 2 -->
+                <article class="card glass-panel fade-in">
+                    <div class="card-header">
+                        <h3>PaliGemma 2</h3>
+                        <a href="https://blog.google/technology/developers/google-gemma-2/" target="_blank"
+                            class="link-icon">Blog ↗</a>
+                    </div>
+                    <div class="card-body">
+                        <p class="summary">
+                            <strong>"Versatile & Scalable"</strong><br>
+                            3B ~ 28B 다양한 사이즈 지원. 해상도별 특화 모델 제공.
+                        </p>
+                        <div class="tech-specs">
+                            <h4>Core Technologies</h4>
+                            <ul class="features">
+                                <li><strong>SigLIP + Gemma 2:</strong> 강력한 기본 모델의 조합.</li>
+                                <li><strong>Resolution Scaling:</strong> 작업에 맞춰 해상도 선택 가능 (224~896px).</li>
+                            </ul>
+                        </div>
+                        <a href="paligemma2.html" class="btn-read-more">Read Full Analysis →</a>
                     </div>
                 </article>
             </div>

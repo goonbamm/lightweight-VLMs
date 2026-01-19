@@ -263,6 +263,16 @@ th {
     color: #ff7675;
 }
 
+.tag-orange {
+    background: rgba(225, 112, 85, 0.2);
+    color: #fab1a0;
+}
+
+.tag-pink {
+    background: rgba(253, 121, 168, 0.2);
+    color: #fd79a8;
+}
+
 /* Grid for Cards */
 .legend-item {
     cursor: pointer;
