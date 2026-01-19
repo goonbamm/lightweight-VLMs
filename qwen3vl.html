@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qwen3-VL - Deep Dive</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Specific accent override for Qwen */
+        :root {
+            --accent-color: #9b59b6;
+        }
+
+        .article-header h1 {
+            background: linear-gradient(135deg, #fff 0%, #9b59b6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background-orb orb-1"></div>
+    <div class="background-orb orb-2"></div>
+
+    <header class="article-header">
+        <div class="container">
+            <div class="badge">ArXiv: 2511.21631</div>
+            <h1>Qwen3-VL</h1>
+            <p class="subtitle">The Ultimate Long-Context Multimodal Model</p>
+
+            <div class="meta-info">
+                <span class="meta-tag">256K Context</span>
+                <span class="meta-tag">Interleaved MRoPE</span>
+                <span class="meta-tag">DeepStack ViT</span>
+            </div>
+        </div>
+    </header>
+
+    <nav class="article-nav">
+        <div class="container">
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#deepstack">DeepStack Arch</a></li>
+                <li><a href="#longcontext">Long Context</a></li>
+                <li><a href="#benchmarks">Benchmarks</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Overview -->
+        <section id="overview" class="content-section">
+            <h2>Overview</h2>
+            <p>
+                Alibaba Qwen 팀이 발표한 <strong>Qwen3-VL</strong>은 "문맥의 왕(King of Context)"이라 불릴 만합니다.
+                텍스트, 이미지, 비디오가 무작위로 섞인(Interleaved) 복잡한 입력을 최대 <strong>256,000 토큰</strong>까지
+                손실 없이 처리합니다. 이는 2시간 분량의 고화질 영화를 통째로 보고 내용을 완벽히 이해하는 수준입니다.
+            </p>
+        </section>
+
+        <!-- DeepStack -->
+        <section id="deepstack" class="content-section">
+            <h2>DeepStack Architecture</h2>
+            <p>
+                기존 모델들이 비전 인코더의 최종 출력만 사용하는 것과 달리, Qwen3-VL은
+                <strong>DeepStack</strong> 구조를 통해 비전 트랜스포머(ViT)의 여러 중간 레이어 정보를
+                LLM의 각기 다른 깊이에 직접 주입합니다.
+            </p>
+
+            <div class="arch-flow">
+                <div class="arch-row">
+                    <div class="arch-box">
+                        <h4>Vision Encoder</h4>
+                        <span>SigLIP-2</span>
+                        <div style="margin-top:5px; font-size:0.8rem; color:#dcdde1;">Multi-Layer Output</div>
+                    </div>
+                    <div class="arrow-right">➜</div>
+                    <div class="arch-box" style="border-color: #9b59b6;">
+                        <h4>DeepStack Injection</h4>
+                        <span style="display:block;">Layer 1 ➜ LLM early</span>
+                        <span style="display:block;">Layer 12 ➜ LLM mid</span>
+                        <span style="display:block;">Layer 24 ➜ LLM deep</span>
+                    </div>
+                    <div class="arrow-right">➜</div>
+                    <div class="arch-box">
+                        <h4>Qwen3 Backbone</h4>
+                        <span>Thinking enabled</span>
+                    </div>
+                </div>
+            </div>
+            <p>
+                이 방식은 <strong>"Needle-in-a-haystack"</strong> 처럼 아주 작은 시각적 단서도 놓치지 않게 하며,
+                비디오 내의 미세한 움직임 변화까지도 포착합니다.
+            </p>
+        </section>
+
+        <!-- Long Context -->
+        <section id="longcontext" class="content-section">
+            <h2>Unlimited Context: 256K</h2>
+            <p>
+                긴 문맥에서 발생하는 위치 편향(Positional Bias)을 해결하기 위해 <strong>Interleaved MRoPE</strong>를 개발했습니다.
+                시간(Temporal) 축과 공간(Spatial) 축을 분리하여 회전 위치 임베딩(RoPE)을 적용함으로써,
+                비디오 길이가 아무리 길어져도 성능 저하가 발생하지 않습니다.
+            </p>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>Stage 1: Multimodal Pre-training</h3>
+                    <p>1조(Trillion) 토큰 규모의 학습. 8K Context.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Stage 2: Context Extension</h3>
+                    <p>32K로 확장. 비디오 및 에이전트 데이터 집중 학습.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Stage 3: Ultra-long Adaptation</h3>
+                    <p><strong>256K Context 완성.</strong> 긴 문서와 장편 비디오 분석 능력 극대화.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benchmarks -->
+        <section id="benchmarks" class="content-section">
+            <h2>Global Leaderboard</h2>
+            <table class="detailed-table">
+                <thead>
+                    <tr>
+                        <th>Benchmark</th>
+                        <th>Qwen3-VL</th>
+                        <th>GPT-5 (Ref)</th>
+                        <th>Gemini 2.5 Pro</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="highlight-row">
+                        <td><strong>MathVista</strong></td>
+                        <td>85.8%</td>
+                        <td>81.3%</td>
+                        <td>73.3%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MathVision</strong></td>
+                        <td>74.6%</td>
+                        <td>65.8%</td>
+                        <td>73.3%</td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td><strong>DocVQA</strong></td>
+                        <td>96.5%</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <a href="index.html" class="back-link">← Back to Overview</a>
+    </main>
+
+    <footer style="text-align: center; padding: 40px; color: #555;">
+        <p>&copy; 2026 Antigravity Analysis. Based on ArXiv 2511.21631.</p>
+    </footer>
+</body>
+
+</html>

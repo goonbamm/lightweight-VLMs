@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmolVLM - Deep Dive</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Specific accent override for Smol */
+        :root {
+            --accent-color: #2ecc71;
+        }
+
+        .article-header h1 {
+            background: linear-gradient(135deg, #fff 0%, #2ecc71 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background-orb orb-1"></div>
+    <div class="background-orb orb-2"></div>
+
+    <header class="article-header">
+        <div class="container">
+            <div class="badge">ArXiv: 2504.05299</div>
+            <h1>SmolVLM</h1>
+            <p class="subtitle">Redefining Small and Efficient Multimodal Models</p>
+
+            <div class="meta-info">
+                <span class="meta-tag">Edge AI</span>
+                <span class="meta-tag">&lt;1GB VRAM</span>
+                <span class="meta-tag">Pixel Shuffle</span>
+            </div>
+        </div>
+    </header>
+
+    <nav class="article-nav">
+        <div class="container">
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#architecture">Architecture</a></li>
+                <li><a href="#efficiency">Efficiency</a></li>
+                <li><a href="#performance">Performance</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Overview -->
+        <section id="overview" class="content-section">
+            <h2>Overview</h2>
+            <p>
+                SmolVLM은 <strong>"작지만 강력한(Small but Mighty)"</strong> 모델의 정점을 보여줍니다.
+                HuggingFace와 Stanford 연구진이 협력하여 개발한 이 모델은 거대 모델 경쟁 속에서
+                <strong>효율성(Efficiency)</strong>이라는 새로운 가치를 증명했습니다.
+            </p>
+            <p>
+                놀랍게도 단 256M~2.2B 파라미터만으로 과거의 80B급 모델 성능을 뛰어넘으며,
+                라즈베리 파이(Raspberry Pi)나 구형 스마트폰에서도 멀티모달 추론이 가능하도록 설계되었습니다.
+            </p>
+        </section>
+
+        <!-- Architecture -->
+        <section id="architecture" class="content-section">
+            <h2>Architecture Innovations</h2>
+            <p>
+                Idefics3 아키텍처를 기반으로 하지만, 극단적인 경량화를 위해 핵심 메커니즘을 변경했습니다.
+            </p>
+
+            <div class="arch-flow">
+                <div class="arch-row">
+                    <div class="arch-box">
+                        <h4>Vision Input</h4>
+                        <span>384x384 Patcher</span>
+                        <div style="margin-top:5px; font-size:0.8rem; color:var(--text-secondary);">Divisible by 3</div>
+                    </div>
+                    <div class="arrow-right">➜</div>
+                    <div class="arch-box" style="border-color: #2ecc71;">
+                        <h4>Pixel Shuffle</h4>
+                        <span>9x Compression</span>
+                        <div style="margin-top:5px; font-size:0.8rem; color:#2ecc71;">Massive Reduction</div>
+                    </div>
+                    <div class="arrow-right">➜</div>
+                    <div class="arch-box">
+                        <h4>Compact LLM</h4>
+                        <span>SmolLM2 1.7B</span>
+                        <div style="margin-top:5px; font-size:0.8rem; color:var(--text-secondary);">High Token Quality
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p>
+                <strong>Pixel Shuffle Compression:</strong> 기존 모델들이 4배 압축을 사용할 때,
+                SmolVLM은 <strong>9배 압축</strong>을 감행했습니다. 픽셀 정보를 공간(Spatial) 차원에서 채널(Channel) 차원으로
+                밀어넣어 정보 손실 없이 토큰 수를 획기적으로 줄였습니다.
+            </p>
+        </section>
+
+        <!-- Efficiency -->
+        <section id="efficiency" class="content-section">
+            <h2>Unmatched Efficiency</h2>
+            <p>
+                SmolVLM의 존재 의의는 바로 압도적인 효율성입니다.
+            </p>
+            <ul
+                style="list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                <li style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px;">
+                    <strong style="color: #2ecc71; font-size: 1.2rem; display: block; margin-bottom: 10px;">0.8GB
+                        VRAM</strong>
+                    SmolVLM-256M 모델은 1GB 미만의 VRAM에서도 구동됩니다. 이는 IoT 기기, 심지어 브라우저 내부(WebGPU) 구동을 가능케 합니다.
+                </li>
+                <li style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px;">
+                    <strong style="color: #2ecc71; font-size: 1.2rem; display: block; margin-bottom: 10px;">16x
+                        Throughput</strong>
+                    Qwen2-VL 대비 최대 16배 빠른 생성 속도를 자랑하며, 실시간 비디오 분석 서비스에 최적화되어 있습니다.
+                </li>
+            </ul>
+        </section>
+
+        <!-- Performance -->
+        <section id="performance" class="content-section">
+            <h2>Benchmark vs Size</h2>
+            <p>
+                사이즈 한계를 극복하기 위해 합성 데이터(Synthetic Data)와 <strong>2-Stage Training (Vision → Video)</strong> 파이프라인을
+                사용했습니다.
+            </p>
+
+            <table class="detailed-table">
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Params</th>
+                        <th>VRAM Usage</th>
+                        <th>Overall Score (Avg)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="highlight-row">
+                        <td><strong>SmolVLM-2.2B</strong></td>
+                        <td>2.2B</td>
+                        <td>4.9 GB</td>
+                        <td>59.8%</td>
+                    </tr>
+                    <tr>
+                        <td>Idefics-80B</td>
+                        <td>80B</td>
+                        <td>>150 GB</td>
+                        <td>58.2%</td>
+                    </tr>
+                    <tr>
+                        <td>Qwen2-VL-2B</td>
+                        <td>2B</td>
+                        <td>~6 GB</td>
+                        <td>57.5%</td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td><strong>SmolVLM-256M</strong></td>
+                        <td>0.25B</td>
+                        <td>0.8 GB</td>
+                        <td>Comparable to 7B</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="margin-top: 10px; font-size: 0.9rem; color: #8899a6;">
+                * Idefics-80B보다 30배 이상 작지만 더 높은 성능을 기록했습니다.
+            </p>
+        </section>
+
+        <a href="index.html" class="back-link">← Back to Overview</a>
+    </main>
+
+    <footer style="text-align: center; padding: 40px; color: #555;">
+        <p>&copy; 2026 Antigravity Analysis. Based on ArXiv 2504.05299.</p>
+    </footer>
+</body>
+
+</html>

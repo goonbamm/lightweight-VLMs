@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ovis2.5 - Deep Dive</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Specific accent override for Ovis */
+        :root {
+            --accent-color: #e74c3c;
+        }
+
+        .article-header h1 {
+            background: linear-gradient(135deg, #fff 0%, #e74c3c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background-orb orb-1"></div>
+    <div class="background-orb orb-2"></div>
+
+    <header class="article-header">
+        <div class="container">
+            <div class="badge">ArXiv: 2508.11737</div>
+            <h1>Ovis2.5</h1>
+            <p class="subtitle">Native Resolution & Thinking Mode Integration</p>
+
+            <div class="meta-info">
+                <span class="meta-tag">NaViT</span>
+                <span class="meta-tag">Structure Preservation</span>
+                <span class="meta-tag">Self-Correction</span>
+            </div>
+        </div>
+    </header>
+
+    <nav class="article-nav">
+        <div class="container">
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#navit">NaViT Technology</a></li>
+                <li><a href="#training">5-Phase Training</a></li>
+                <li><a href="#performance">Performance</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Overview -->
+        <section id="overview" class="content-section">
+            <h2>Overview</h2>
+            <p>
+                Ovis2.5는 이미지 처리 방식의 패러다임을 바꿨습니다. 기존 모델들이 이미지를 강제로 정사각형으로 자르거나(Resize/Crop),
+                여러 조각으로 나누는(Tiling) 방식이었다면, Ovis2.5는 <strong>원본 그대로(Native Resolution)</strong> 처리합니다.
+                또한 "Thinking Mode"를 탑재하여 스스로의 답변을 검증하고 수정하는 능력을 갖췄습니다.
+            </p>
+        </section>
+
+        <!-- NaViT -->
+        <section id="navit" class="content-section">
+            <h2>NaViT (Native Vision Transformer)</h2>
+            <p>
+                이미지의 비율과 해상도를 인위적으로 조작하지 않습니다. 길쭉한 영수증이나 파노라마 사진도
+                변형 없이 그대로 입력받아 처리합니다.
+            </p>
+
+            <div class="arch-flow">
+                <div class="arch-row">
+                    <div class="arch-box">
+                        <h4>Variable Input</h4>
+                        <span>Any Aspect Ratio</span>
+                        <div style="margin-top:5px; font-size:0.8rem; color:var(--text-secondary);">No Padding/Crop
+                        </div>
+                    </div>
+                    <div class="arrow-right">➜</div>
+                    <div class="arch-box" style="border-color: #e74c3c;">
+                        <h4>Visual Tokenizer</h4>
+                        <span>Probabilistic Token</span>
+                        <div style="margin-top:5px; font-size:0.8rem; color:#e74c3c;">Discrete Vocabulary</div>
+                    </div>
+                    <div class="arrow-right">➜</div>
+                    <div class="arch-box">
+                        <h4>Thinking LLM</h4>
+                        <span>Self-Reflection</span>
+                        <div style="margin-top:5px; font-size:0.8rem; color:var(--text-secondary);">Hallucination Check
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p>
+                이 구조 덕분에 <strong>차트(Chart), 표(Table), 문서(Document)</strong> 등 구조적 정보(Structure)가 중요한
+                데이터에서 압도적인 인식률을 보여줍니다.
+            </p>
+        </section>
+
+        <!-- Training -->
+        <section id="training" class="content-section">
+            <h2>5-Phase Curriculum Learning</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>Phase 1 & 2: Pre-training</h3>
+                    <p>Visual Embedding Table(VET) 학습 및 멀티모달 정렬. OCR 데이터 집중 학습.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Phase 3: Instruction Tuning</h3>
+                    <p>"Wait, let me check..."와 같은 사고 과정(Thinking) 데이터 주입.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Phase 4: DPO (Direct Preference Optimization)</h3>
+                    <p>인간 선호도 정렬. 정답/오답 쌍 비교 학습.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>Phase 5: GRPO (Generative RL)</h3>
+                    <p><strong>수학 및 논리 강화.</strong> 언어 모델의 추론 능력을 극대화하여 시각적 실수 방지.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benchmarks -->
+        <section id="performance" class="content-section">
+            <h2>Robustness & Accuracy</h2>
+            <p>
+                Ovis2.5는 환각(Hallucination)이 가장 적은 모델 중 하나입니다.
+            </p>
+            <table class="detailed-table">
+                <thead>
+                    <tr>
+                        <th>Benchmark</th>
+                        <th>Ovis2.5-9B</th>
+                        <th>GPT-4o</th>
+                        <th>OpenSource Avg</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="highlight-row">
+                        <td><strong>HallusionBench</strong> (Less is better?) No, Score is Reliability</td>
+                        <td>65.1%</td>
+                        <td>-</td>
+                        <td>~50%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MathVista</strong></td>
+                        <td>83.4%</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td><strong>OpenCompass MLLM</strong></td>
+                        <td>78.3 (SOTA &lt;40B)</td>
+                        <td>-</td>
+                        <td>72.0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <a href="index.html" class="back-link">← Back to Overview</a>
+    </main>
+
+    <footer style="text-align: center; padding: 40px; color: #555;">
+        <p>&copy; 2026 Antigravity Analysis. Based on ArXiv 2508.11737.</p>
+    </footer>
+</body>
+
+</html>

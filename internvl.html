@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InternVL 3.5 - Deep Dive</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="background-orb orb-1"></div>
+    <div class="background-orb orb-2"></div>
+
+    <header class="article-header">
+        <div class="container">
+            <div class="badge">ArXiv: 2508.18265</div>
+            <h1>InternVL 3.5</h1>
+            <p class="subtitle">Advanced Reasoning via Cascade Reinforcement Learning</p>
+
+            <div class="meta-info">
+                <span class="meta-tag">Reasoning Spec</span>
+                <span class="meta-tag">Dynamic Resolution</span>
+                <span class="meta-tag">Cascade RL</span>
+            </div>
+        </div>
+    </header>
+
+    <nav class="article-nav">
+        <div class="container">
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#architecture">Architecture</a></li>
+                <li><a href="#training">Training</a></li>
+                <li><a href="#performance">Performance</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Overview -->
+        <section id="overview" class="content-section">
+            <h2>Overview</h2>
+            <p>
+                InternVL 3.5는 오픈소스 MLLM(Multimodal Large Language Model)의 새로운 기준을 제시하는 모델입니다.
+                단순히 이미지 내용을 설명하는 것을 넘어, <strong>복잡한 수학적 추론, 코딩, 그리고 GUI 에이전트 작업</strong>에서
+                상용 모델(GPT-4o 등)과 대등하거나 능가하는 성능을 보여줍니다.
+            </p>
+            <p>
+                가장 큰 혁신은 <strong>"Cascade Reinforcement Learning"</strong> 도입입니다.
+                기존의 SFT(Supervised Fine-Tuning) 한계를 넘어, Offline RL로 안정적인 기반을 다지고
+                Online RL로 모델의 추론 한계점을 돌파했습니다. 또한, <strong>ViR(Visual Resolution Router)</strong>를 통해
+                이미지의 중요도에 따라 해상도를 동적으로 조절하여 연산 효율성을 극대화했습니다.
+            </p>
+        </section>
+
+        <!-- Architecture -->
+        <section id="architecture" class="content-section">
+            <h2>System Architecture</h2>
+            <p>
+                InternVL 3.5는 전통적인 [ViT - MLP - LLM] 구조를 따르지만, 효율성을 위해
+                <strong>Decoupled Vision-Language Deployment (DvD)</strong> 전략을 취합니다.
+            </p>
+
+            <div class="arch-flow">
+                <div class="arch-row">
+                    <div class="arch-box">
+                        <h4>Vision Encoder</h4>
+                        <span>InternViT-300M / 6B</span>
+                        <div style="margin-top:5px; font-size:0.8rem; color:#a5b4fc;">Dynamic Res</div>
+                    </div>
+                    <div class="arrow-right">➜</div>
+                    <div class="arch-box" style="border-color: var(--accent-color);">
+                        <h4>Visual Router (ViR)</h4>
+                        <span>Token Compression</span>
+                        <div style="margin-top:5px; font-size:0.8rem; color:#a5b4fc;">Reduces 50% Tokens</div>
+                    </div>
+                    <div class="arrow-right">➜</div>
+                    <div class="arch-box">
+                        <h4>LLM Backbone</h4>
+                        <span>Qwen3 / GPT-OSS Optimized</span>
+                        <div style="margin-top:5px; font-size:0.8rem; color:#a5b4fc;">Reasoning Headers</div>
+                    </div>
+                </div>
+            </div>
+
+            <p>
+                특히 <strong>ViR (Visual Consistency Router)</strong>는 입력된 이미지가 고해상도 처리가 필요한지(예: 문서, 차트)
+                아니면 저해상도로 충분한지(예: 일반 풍경)를 판단하여 토큰 수를 동적으로 조절합니다.
+                이를 통해 추론 속도를 기존 대비 4배까지 향상시켰습니다.
+            </p>
+        </section>
+
+        <!-- Training -->
+        <section id="training" class="content-section">
+            <h2>Training Pipeline</h2>
+            <p>
+                단순 SFT에 머물지 않고, 강화학습(RL)을 대폭 도입하여 "생각하는 모델"을 만들었습니다.
+            </p>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>1. Multimodal Continual Pre-Training</h3>
+                    <p>대규모 이미지-텍스트 쌍을 통해 기본적인 시각적 인지 능력을 학습합니다.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>2. Supervised Fine-Tuning (SFT)</h3>
+                    <p>
+                        약 56M(5,600만)개의 고품질 샘플 사용.<br>
+                        텍스트:멀티모달 비율 = 1:3.5 유지. <br>
+                        특히 <strong>Thinking Mode</strong> 데이터를 포함하여 CoT(Chain of Thought) 능력을 주입했습니다.
+                    </p>
+                </div>
+                <div class="timeline-item">
+                    <h3>3. Cascade Reinforcement Learning</h3>
+                    <p style="color: #fff;"><strong>핵심 차별점 (Core Innovation)</strong></p>
+                    <ul style="list-style: disc; margin-left: 20px; color: var(--text-secondary); margin-top: 10px;">
+                        <li><strong>Offline RL:</strong> 200K MMPR 데이터셋 사용. 안정적인 보상 모델 학습.</li>
+                        <li><strong>Online RL:</strong> 실시간 피드백을 통해 미세한 정렬(Alignment) 수행 및 성능 상한 돌파.</li>
+                    </ul>
+                </div>
+                <div class="timeline-item">
+                    <h3>4. Visual Consistency Learning (ViCO)</h3>
+                    <p>ViR 라우터가 도입될 때 발생할 수 있는 비전-언어 간의 불일치를 해소하는 경량화 튜닝 단계입니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Performance -->
+        <section id="performance" class="content-section">
+            <h2>Benchmark Performance</h2>
+            <p>
+                InternVL 3.5는 특히 이공계 추론(Math/Science) 및 에이전트 작업에서 압도적인 성과를 냅니다.
+            </p>
+
+            <table class="detailed-table">
+                <thead>
+                    <tr>
+                        <th>Benchmark</th>
+                        <th>InternVL 3.5</th>
+                        <th>GPT-4o (Ref)</th>
+                        <th>Gemini 1.5 Pro</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="highlight-row">
+                        <td><strong>MathVista</strong> (Math Reasoning)</td>
+                        <td>65.5%</td>
+                        <td>63.8%</td>
+                        <td>60.0%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MMMU</strong> (Multi-discipline)</td>
+                        <td>68.2%</td>
+                        <td>69.1%</td>
+                        <td>62.2%</td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td><strong>ScreenSpot</strong> (GUI Agent)</td>
+                        <td>88.4%</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td><strong>OCRBench</strong></td>
+                        <td>842</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="margin-top: 10px; font-size: 0.9rem; color: #8899a6;">
+                * SOTA 달성 항목은 하이라이트 처리됨. ScreenSpot 등 에이전트 작업에서 특화된 성능 확인.
+            </p>
+        </section>
+
+        <a href="index.html" class="back-link">← Back to Overview</a>
+    </main>
+
+    <footer style="text-align: center; padding: 40px; color: #555;">
+        <p>&copy; 2026 Antigravity Analysis. Based on ArXiv 2508.18265.</p>
+    </footer>
+</body>
+
+</html>

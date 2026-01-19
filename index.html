@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="2025 Next-Gen Multimodal Models Comparison: InternVL 3.5, SmolVLM, Qwen3-VL, Ovis2.5. Analysis of architecture, benchmarks, and technical details.">
+    <title>2025 MLLM Comparison</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="background-orb orb-1"></div>
+    <div class="background-orb orb-2"></div>
+
+    <!-- Navigation -->
+    <nav class="sticky-nav glass-panel">
+        <ul class="nav-links">
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#trends">Trends</a></li>
+            <li><a href="#radar">Analysis</a></li>
+            <li><a href="#comparison">Comparison</a></li>
+            <li><a href="#deep-dive">Tech Specs</a></li>
+            <li><a href="#models">Models</a></li>
+        </ul>
+    </nav>
+
+    <header id="overview">
+        <div class="container">
+            <div class="badge">Feb 2026 Analysis</div>
+            <h1>2025 Next-Gen <span class="gradient-text">Multimodal Models</span></h1>
+            <p class="subtitle">ArXiv 최신 논문 4편 심층 분석 및 비교</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Overview Section -->
+        <section class="overview">
+            <h2 class="section-title">Overview</h2>
+            <div class="card glass-panel">
+                <p>
+                    2025년 하반기에 발표된 주목할 만한 <strong>Multimodal Large Language Models (MLLM)</strong> 논문 4편을 비교 분석합니다.
+                    모두 <strong>Vision-Language</strong> 능력을 강화했지만, 각 모델이 집중한 핵심 가치(Core Value)와 기술적 접근 방식(Architecture)은
+                    뚜렷하게 다릅니다.
+                </p>
+            </div>
+        </section>
+
+        <!-- New: Common Trends -->
+        <section class="trends" id="trends">
+            <h2 class="section-title">Common Trends of 2025</h2>
+            <div class="grid">
+                <div class="card glass-panel trend-card">
+                    <div class="icon">🧠</div>
+                    <h3>Reasoning First</h3>
+                    <p>단순 이미지 설명을 넘어, <strong>복잡한 추론(CoT)</strong>과 논리적 사고 능력을 핵심 평가지표로 삼고 있습니다.</p>
+                </div>
+                <div class="card glass-panel trend-card">
+                    <div class="icon">⚡</div>
+                    <h3>Efficiency & Edge</h3>
+                    <p>거대 모델뿐만 아니라, 모바일/엣지 구동을 위한 <strong>경량화 및 아키텍처 효율성</strong>이 강조됩니다.</p>
+                </div>
+                <div class="card glass-panel trend-card">
+                    <div class="icon">🎬</div>
+                    <h3>Video Native</h3>
+                    <p>비디오를 별도가 아닌 <strong>First-class Citizen</strong>으로 처리하며, 장문 영상 이해 능력이 필수적입니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- New: Radar Chart -->
+        <section class="radar-analysis" id="radar">
+            <h2 class="section-title">Performance Radar Analysis</h2>
+            <div class="glass-panel radar-container">
+                <div class="radar-legend">
+                    <div class="legend-item"><span class="dot" style="background:var(--tag-blue)"></span> InternVL 3.5
+                    </div>
+                    <div class="legend-item"><span class="dot" style="background:var(--tag-green)"></span> SmolVLM</div>
+                    <div class="legend-item"><span class="dot" style="background:var(--tag-purple)"></span> Qwen3-VL
+                    </div>
+                    <div class="legend-item"><span class="dot" style="background:var(--tag-red)"></span> Ovis2.5</div>
+                </div>
+                <canvas id="radarChart" width="500" height="400"></canvas>
+            </div>
+        </section>
+
+        <!-- Comparison Matrix -->
+        <section class="comparison" id="comparison">
+            <h2 class="section-title">Comparison Matrix</h2>
+            <div class="table-container glass-panel">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Architecture (아키텍처)</th>
+                            <th>Context Window</th>
+                            <th>Training Strategy</th>
+                            <th>Target Use Case</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="model-name">InternVL 3.5</td>
+                            <td>ViT-MLP-LLM + ViR</td>
+                            <td>128K</td>
+                            <td>Cascade RL (Offline+Online)</td>
+                            <td>Complex Reasoning (Math/Code)</td>
+                        </tr>
+                        <tr>
+                            <td class="model-name">SmolVLM</td>
+                            <td>Compact ViT + SmolLM2</td>
+                            <td>Custom (Streaming)</td>
+                            <td>Pixel Shuffle (Compression)</td>
+                            <td>On-Device (Mobile/IoT)</td>
+                        </tr>
+                        <tr>
+                            <td class="model-name">Qwen3-VL</td>
+                            <td>MoE (DeepStack)</td>
+                            <td>256K Interleaved</td>
+                            <td>Interleaved MRoPE</td>
+                            <td>Long Video & Doc Analysis</td>
+                        </tr>
+                        <tr>
+                            <td class="model-name">Ovis2.5</td>
+                            <td>NaViT (Native Res)</td>
+                            <td>Standard</td>
+                            <td>Curriculum + Thinking Mode</td>
+                            <td>Fine-grained OCR/Charts</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="benchmark-section" style="margin-top: 40px;">
+                <h3 style="margin-bottom: 20px; color: var(--text-color);">Benchmark Highlights (MathVista)</h3>
+                <div class="benchmark-grid">
+                    <!-- Benchmark items will be styled via new CSS -->
+                    <div class="bench-item">
+                        <span>InternVL 3.5</span>
+                        <div class="bench-bar-container">
+                            <div class="bench-bar" style="width: 65.5%; background: var(--tag-blue);">65.5%</div>
+                        </div>
+                    </div>
+                    <div class="bench-item">
+                        <span>Qwen3-VL</span>
+                        <div class="bench-bar-container">
+                            <div class="bench-bar" style="width: 85.8%; background: var(--tag-purple);">85.8%</div>
+                        </div>
+                    </div>
+                    <div class="bench-item">
+                        <span>Ovis2.5</span>
+                        <div class="bench-bar-container">
+                            <div class="bench-bar" style="width: 83.4%; background: var(--tag-red);">83.4%</div>
+                        </div>
+                    </div>
+                </div>
+                <p style="font-size: 0.8rem; color: #b2bec3; margin-top: 10px;">* Scores based on reported MathVista
+                    benchmarks in papers.</p>
+            </div>
+        </section>
+
+        <!-- Technical Deep Dive -->
+        <section class="deep-dive" id="deep-dive">
+            <h2 class="section-title">Technical Deep Dive <span
+                    style="font-size:0.6em; color:var(--accent-color); vertical-align:middle; margin-left:10px;">beta</span>
+            </h2>
+
+            <div class="tabs-container glass-panel">
+                <div class="tabs-header">
+                    <button class="tab-btn active" data-tab="arch">Structure Comparison</button>
+                    <button class="tab-btn" data-tab="training">Learning Methodology</button>
+                    <button class="tab-btn" data-tab="data">Dataset Strategy</button>
+                </div>
+
+                <!-- Architecture Tab -->
+                <div class="tab-content active" id="arch">
+                    <div class="viz-grid">
+                        <div class="viz-card">
+                            <h4>InternVL 3.5</h4>
+                            <div class="arch-diagram internvl">
+                                <div class="box vision">ViT</div>
+                                <div class="arrow">⬇</div>
+                                <div class="box router">Router (ViR)</div>
+                                <div class="arrow">⬇</div>
+                                <div class="box llm">LLM (RLHF)</div>
+                            </div>
+                            <p class="viz-desc">Dynamic Resolution (효율성)</p>
+                        </div>
+                        <div class="viz-card">
+                            <h4>SmolVLM</h4>
+                            <div class="arch-diagram smol">
+                                <div class="box vision small">Small ViT</div>
+                                <div class="line"></div>
+                                <div class="box llm small">Compact LLM</div>
+                            </div>
+                            <p class="viz-desc">Compact & Dense (경량화)</p>
+                        </div>
+                        <div class="viz-card">
+                            <h4>Qwen3-VL</h4>
+                            <div class="arch-diagram qwen">
+                                <div class="moe-group">
+                                    <div class="box moe">Exp 1</div>
+                                    <div class="box moe">Exp 2</div>
+                                    <div class="box moe">Exp 3</div>
+                                </div>
+                                <div class="arrow">⬇</div>
+                                <div class="box llm">DeepStack</div>
+                            </div>
+                            <p class="viz-desc">Mixture-of-Experts (확장성)</p>
+                        </div>
+                        <div class="viz-card">
+                            <h4>Ovis2.5</h4>
+                            <div class="arch-diagram ovis">
+                                <div class="box vision wide">Native Res Image</div>
+                                <div class="arrow">⬇</div>
+                                <div class="box llm">Thinking LLM</div>
+                            </div>
+                            <p class="viz-desc">No-Tiling (원본 해상도)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Training Tab -->
+                <div class="tab-content" id="training">
+                    <div class="flow-container">
+                        <div class="flow-row">
+                            <div class="flow-label">InternVL</div>
+                            <div class="flow-steps">
+                                <div class="step">SFT</div>
+                                <div class="connector">→</div>
+                                <div class="step highlight">Offline RL</div>
+                                <div class="connector">→</div>
+                                <div class="step highlight">Online RL</div>
+                            </div>
+                        </div>
+                        <div class="flow-row">
+                            <div class="flow-label">Ovis2.5</div>
+                            <div class="flow-steps">
+                                <div class="step">Pretrain</div>
+                                <div class="connector">→</div>
+                                <div class="step">Instruct</div>
+                                <div class="connector">→</div>
+                                <div class="step highlight">Reasoning (DPO/GRPO)</div>
+                            </div>
+                        </div>
+                        <div class="flow-row">
+                            <div class="flow-label">Standard</div>
+                            <div class="flow-steps">
+                                <div class="step">Pretrain</div>
+                                <div class="connector">→</div>
+                                <div class="step">SFT</div>
+                                <div class="connector">→</div>
+                                <div class="step dimmed">RLHF (Optional)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dataset Tab -->
+                <div class="tab-content" id="data">
+                    <div class="chart-container">
+                        <div class="chart-row">
+                            <span class="chart-label">SmolVLM</span>
+                            <div class="bar-group">
+                                <div class="bar quality" style="width: 80%;">Quality Focus</div>
+                            </div>
+                            <span class="chart-val">High (Curated)</span>
+                        </div>
+                        <div class="chart-row">
+                            <span class="chart-label">Qwen3-VL</span>
+                            <div class="bar-group">
+                                <div class="bar quantity" style="width: 100%;">Quantity Focus</div>
+                            </div>
+                            <span class="chart-val">Massive (Trillions)</span>
+                        </div>
+                        <div class="chart-row">
+                            <span class="chart-label">InternVL</span>
+                            <div class="bar-group">
+                                <div class="bar balanced" style="width: 60%;">Balanced</div>
+                                <div class="bar rl-data" style="width: 30%;">RL Data</div>
+                            </div>
+                            <span class="chart-val">Hybrid</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detailed Cards -->
+        <section class="details" id="models">
+            <h2 class="section-title">Model Analysis</h2>
+
+            <div class="grid">
+                <!-- InternVL 3.5 -->
+                <article class="card glass-panel fade-in">
+                    <div class="card-header">
+                        <h3>InternVL 3.5</h3>
+                        <a href="https://arxiv.org/abs/2508.18265" target="_blank" class="link-icon">ArXiv ↗</a>
+                    </div>
+                    <div class="card-body">
+                        <p class="summary">
+                            <strong>"Advanced Reasoning via RL"</strong><br>
+                            Cascade RL을 통해 추론 능력과 효율성을 동시에 잡은 모델입니다.
+                        </p>
+                        <div class="tech-specs">
+                            <h4>Core Technologies</h4>
+                            <ul class="features">
+                                <li><strong>Cascade RL:</strong> Offline RL로 안정성을, Online RL로 세밀한 정렬(Alignment)을 수행.
+                                </li>
+                                <li><strong>Visual Resolution Router (ViR):</strong> 이미지 복잡도에 따라 해상도 동적 조절.</li>
+                            </ul>
+                        </div>
+                        <a href="internvl.html" class="btn-read-more">Read Full Analysis →</a>
+                    </div>
+                </article>
+
+                <!-- SmolVLM -->
+                <article class="card glass-panel fade-in">
+                    <div class="card-header">
+                        <h3>SmolVLM</h3>
+                        <a href="https://arxiv.org/abs/2504.05299" target="_blank" class="link-icon">ArXiv ↗</a>
+                    </div>
+                    <div class="card-body">
+                        <p class="summary">
+                            <strong>"Redefining Efficient Edge AI"</strong><br>
+                            HuggingFace와 Stanford가 협력하여 만든 모바일 최적화 모델입니다.
+                        </p>
+                        <div class="tech-specs">
+                            <h4>Core Technologies</h4>
+                            <ul class="features">
+                                <li><strong>Pixel Shuffle:</strong> 9배 이미지 데이터 압축 기술 적용.</li>
+                                <li><strong>IoT Ready:</strong> 1GB VRAM 미만에서 구동 가능.</li>
+                            </ul>
+                        </div>
+                        <a href="smolvlm.html" class="btn-read-more">Read Full Analysis →</a>
+                    </div>
+                </article>
+
+                <!-- Qwen3-VL -->
+                <article class="card glass-panel fade-in">
+                    <div class="card-header">
+                        <h3>Qwen3-VL</h3>
+                        <a href="https://arxiv.org/abs/2511.21631" target="_blank" class="link-icon">ArXiv ↗</a>
+                    </div>
+                    <div class="card-body">
+                        <p class="summary">
+                            <strong>"The King of Long Context"</strong><br>
+                            256K Context Window로 2시간 분량 비디오를 한 번에 이해합니다.
+                        </p>
+                        <div class="tech-specs">
+                            <h4>Core Technologies</h4>
+                            <ul class="features">
+                                <li><strong>DeepStack ViT:</strong> 중간 레이어 시각 정보 주입.</li>
+                                <li><strong>Interleaved MRoPE:</strong> 시공간 위치 인코딩 최적화.</li>
+                            </ul>
+                        </div>
+                        <a href="qwen3vl.html" class="btn-read-more">Read Full Analysis →</a>
+                    </div>
+                </article>
+
+                <!-- Ovis2.5 -->
+                <article class="card glass-panel fade-in">
+                    <div class="card-header">
+                        <h3>Ovis2.5</h3>
+                        <a href="https://arxiv.org/abs/2508.11737" target="_blank" class="link-icon">ArXiv ↗</a>
+                    </div>
+                    <div class="card-body">
+                        <p class="summary">
+                            <strong>"Thinking Mode Enabled"</strong><br>
+                            타일링 없는 원본 해상도 처리와 Self-Correction 사고 과정.
+                        </p>
+                        <div class="tech-specs">
+                            <h4>Core Technologies</h4>
+                            <ul class="features">
+                                <li><strong>NaViT:</strong> 원본 해상도 및 비율 그대로 처리.</li>
+                                <li><strong>Thinking Mode:</strong> 환각(Hallucination) 최소화.</li>
+                            </ul>
+                        </div>
+                        <a href="ovis25.html" class="btn-read-more">Read Full Analysis →</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Generated by <strong>Antigravity</strong> based on ArXiv papers.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
